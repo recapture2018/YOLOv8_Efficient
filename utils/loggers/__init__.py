@@ -3,6 +3,7 @@
 Logging utils
 """
 
+
 import os
 import warnings
 from pathlib import Path
@@ -42,15 +43,15 @@ except (ImportError, AssertionError):
     clearml = None
 
 try:
-    if RANK not in [0, -1]:
-        comet_ml = None
-    else:
+    if RANK in {0, -1}:
         import comet_ml
 
         assert hasattr(comet_ml, '__version__')  # verify package import not local dir
         from utils.loggers.comet import CometLogger
 
-except (ModuleNotFoundError, ImportError, AssertionError):
+    else:
+        comet_ml = None
+except (ImportError, AssertionError):
     comet_ml = None
 
 
@@ -175,7 +176,7 @@ class Loggers():
                 self.comet_logger.on_pretrain_routine_end(paths)
 
     def on_train_batch_end(self, model, ni, imgs, targets, paths, vals):
-        log_dict = dict(zip(self.keys[0:3], vals))
+        log_dict = dict(zip(self.keys[:3], vals))
         # Callback runs on train batch end
         # ni: number integrated batches (since train start)
         if self.plots:
@@ -221,10 +222,10 @@ class Loggers():
         # Callback runs on val end
         if self.wandb or self.clearml:
             files = sorted(self.save_dir.glob('val*.jpg'))
-            if self.wandb:
-                self.wandb.log({"Validation": [wandb.Image(str(f), caption=f.name) for f in files]})
-            if self.clearml:
-                self.clearml.log_debug_samples(files, title='Validation')
+        if self.wandb:
+            self.wandb.log({"Validation": [wandb.Image(str(f), caption=f.name) for f in files]})
+        if self.clearml:
+            self.clearml.log_debug_samples(files, title='Validation')
 
         if self.comet_logger:
             self.comet_logger.on_val_end(nt, tp, fp, p, r, f1, ap, ap50, ap_class, confusion_matrix)

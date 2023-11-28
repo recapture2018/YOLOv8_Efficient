@@ -10,9 +10,7 @@ def is_nan(x):
 import pandas
 def pd_read_csv(csv_path):
 
-    df = pandas.read_csv(csv_path)
-    # print(df)
-    return df
+    return pandas.read_csv(csv_path)
 
 def fps_to_ms(fps: int) -> int:
     '''

@@ -12,8 +12,7 @@ except (ImportError, AssertionError):
 
 
 def _log_images(imgs_dict, group="", step=0):
-    task = Task.current_task()
-    if task:
+    if task := Task.current_task():
         for k, v in imgs_dict.items():
             task.get_logger().report_image(group, k, step, v)
 

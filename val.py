@@ -150,7 +150,7 @@ def run(
     # model.eval()
     cuda = device.type != 'cpu'
     # is_coco = isinstance(data.get('val'), str) and data['val'].endswith(f'coco{os.sep}val2017.txt')  # COCO dataset
-    nc = 1 if single_cls else int(len(data['names']))  # number of classes
+    nc = 1 if single_cls else len(data['names'])
 
     # print("nc:",nc)
     print("data:", data)

@@ -591,12 +591,11 @@ def plot_one_box_PIL(box, im, color=(128, 128, 128), label=None, line_thickness=
 import colorsys
 def color_list(category_quantity):
     hsv_list = []
+    saturation = 1
+    value = 1
     for i in range(category_quantity):
         hue = i / category_quantity
-        saturation = 1
-        value = 1
         hsv = (hue, saturation, value)
         hsv_list.append(hsv)
     colorFloat_list = [colorsys.hsv_to_rgb(*k) for k in hsv_list]
-    color_list = [tuple([int(x * 255) for x in k]) for k in colorFloat_list]
-    return color_list
+    return [tuple(int(x * 255) for x in k) for k in colorFloat_list]

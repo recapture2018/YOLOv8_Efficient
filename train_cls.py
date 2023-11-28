@@ -21,7 +21,12 @@ def parse_opt():
     parser = argparse.ArgumentParser()
     parser.add_argument('--task', type=str, default='classify', help='select train task, i.e.  detect or classify, seg')
     parser.add_argument('--mode', type=str, default='train', help='run mode')
-    parser.add_argument('--model', type=str, default=ROOT + 'models/yolov8/cls/yolov8n-cls.yaml',help='model.yaml path')
+    parser.add_argument(
+        '--model',
+        type=str,
+        default=f'{ROOT}models/yolov8/cls/yolov8n-cls.yaml',
+        help='model.yaml path',
+    )
     parser.add_argument('--data', type=str, default='mnist160', help='dataset.yaml path')
     parser.add_argument('--epochs', type=int, default=100, help='number of epochs')
 

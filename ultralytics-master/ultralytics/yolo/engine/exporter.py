@@ -221,23 +221,6 @@ class Exporter:
         if any((saved_model, pb, tflite, edgetpu, tfjs)):  # TensorFlow formats
             raise NotImplementedError('YOLOv8 TensorFlow export support is still under development. '
                                       'Please consider contributing to the effort if you have TF expertise. Thank you!')
-            assert not isinstance(model, ClassificationModel), 'ClassificationModel TF exports not yet supported.'
-            nms = False
-            f[5], s_model = self._export_saved_model(nms=nms or self.args.agnostic_nms or tfjs,
-                                                     agnostic_nms=self.args.agnostic_nms or tfjs)
-            if pb or tfjs:  # pb prerequisite to tfjs
-                f[6], _ = self._export_pb(s_model)
-            if tflite or edgetpu:
-                f[7], _ = self._export_tflite(s_model,
-                                              int8=self.args.int8 or edgetpu,
-                                              data=self.args.data,
-                                              nms=nms,
-                                              agnostic_nms=self.args.agnostic_nms)
-                if edgetpu:
-                    f[8], _ = self._export_edgetpu()
-                self._add_tflite_metadata(f[8] or f[7], num_outputs=len(s_model.outputs))
-            if tfjs:
-                f[9], _ = self._export_tfjs()
         if paddle:  # PaddlePaddle
             f[10], _ = self._export_paddle()
 

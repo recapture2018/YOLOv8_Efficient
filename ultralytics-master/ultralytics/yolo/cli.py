@@ -49,8 +49,7 @@ def cli(cfg):
         "predict": module.predict,
         "export": yolo.engine.exporter.export,
         "checks": hub.checks}
-    func = mode_func_map.get(mode)
-    if not func:
+    if func := mode_func_map.get(mode):
+        func(cfg)
+    else:
         raise SyntaxError(f"mode not recognized. Choices are {', '.join(mode_func_map.keys())}")
-
-    func(cfg)
